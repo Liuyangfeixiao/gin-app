@@ -76,7 +76,7 @@ func getZapCore() zapcore.Core {
 	if global.App.Config.Log.Format == "json" {
 		encoder = zapcore.NewJSONEncoder(encoderConfig)
 	} else {
-		encoder = zapcore.NewJSONEncoder(encoderConfig)
+		encoder = zapcore.NewConsoleEncoder(encoderConfig)
 	}
 	return zapcore.NewCore(encoder, getLogWriter(), level)
 }
