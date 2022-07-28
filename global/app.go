@@ -4,12 +4,14 @@ package global
 import (
 	"gin-demo/config"
 	"github.com/spf13/viper"
+	"go.uber.org/zap"
 )
 
 // Application attributes TODO
 type Application struct {
 	ConfigViper *viper.Viper
 	Config      config.Configuration
+	Log         *zap.Logger
 }
 
 var App = new(Application)
