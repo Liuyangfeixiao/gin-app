@@ -1,6 +1,7 @@
 package bootstrap
 
 import (
+	"gin-demo/app/models"
 	"gin-demo/global"
 	"go.uber.org/zap"
 	"gopkg.in/natefinch/lumberjack.v2"
@@ -68,6 +69,15 @@ func InitDB() *gorm.DB {
 	}
 }
 
+// 数据库表初始化
+func initMySqlTables(db *gorm.DB) {
+	err := db.AutoMigrate(models.User{})
+	if err != nil {
+		global.App.Log.Error("Migrate table failed", zap.Any("err", err))
+		os.Exit(0)
+	}
+}
+
 func initMySqlGorm() *gorm.DB {
 	dbConfig := global.App.Config.Database
 
@@ -97,6 +107,7 @@ func initMySqlGorm() *gorm.DB {
 		// 设置连接池
 		sqlDB.SetMaxIdleConns(dbConfig.MaxIdleConns)
 		sqlDB.SetMaxOpenConns(dbConfig.MaxOpenConns)
+		initMySqlTables(db)
 		return db
 	}
 }
