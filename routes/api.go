@@ -2,6 +2,7 @@ package routes
 
 import (
 	"gin-demo/app/common/request"
+	"gin-demo/app/controllers/app"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"time"
@@ -29,4 +30,6 @@ func SetApiGroupRoutes(router *gin.RouterGroup) {
 			"message": "success",
 		})
 	})
+
+	router.POST("/auth/register", app.Register)
 }
