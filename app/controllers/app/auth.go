@@ -4,6 +4,7 @@ import (
 	"gin-demo/app/common/request"
 	"gin-demo/app/common/response"
 	"gin-demo/app/services"
+	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 )
 
@@ -32,4 +33,13 @@ func Info(c *gin.Context) {
 		response.BusinessFail(c, err.Error())
 	}
 	response.Success(c, user)
+}
+
+func Logout(c *gin.Context) {
+	err := services.JwtService.JoinBlackList(c.Keys["token"].(*jwt.Token))
+	if err != nil {
+		response.BusinessFail(c, "登出失败")
+		return
+	}
+	response.Success(c, nil)
 }
