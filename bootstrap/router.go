@@ -2,6 +2,7 @@ package bootstrap
 
 import (
 	"context"
+	"gin-demo/app/middleware"
 	"gin-demo/global"
 	"gin-demo/routes"
 	"github.com/gin-gonic/gin"
@@ -14,7 +15,14 @@ import (
 )
 
 func setupRouter() *gin.Engine {
-	r := gin.Default()
+	if global.App.Config.App.Env == "production" {
+		gin.SetMode(gin.ReleaseMode)
+	}
+	r := gin.New()
+	r.Use(gin.Logger(), middleware.CustomRecovery())
+
+	// 跨域处理
+	//r.Use(middleware.Cors())
 
 	// 前端静态资源
 	r.StaticFile("/", "./static/dist/index.html")
